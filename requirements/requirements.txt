@@ -1,4 +1,3 @@
-ovos-core~=0.0.1
 neon-utils~=0.13.2a3
 # TODO: Update to non-alpha neon-utils version DM
 ovos_utils>=0.0.12
