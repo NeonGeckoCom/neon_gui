@@ -1,0 +1,43 @@
+# This workflow will run unit tests
+
+name: Run Unit Tests
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  unit_tests:
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          sudo apt install portaudio19-dev python3-pyaudio
+          python -m pip install --upgrade pip
+          pip install -r requirements/requirements.txt
+          pip install -r requirements/test_requirements.txt
+
+      - name: Test GUI
+        run: |
+          pytest tests/test_gui.py --doctest-modules --junitxml=tests/gui-test-results.xml
+      - name: Upload GUI test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: gui-test-results
+          path: tests/gui-test-results.xml
+
+      - name: Test Resting Screen
+        run: |
+          pytest tests/test_resting_screen.py --doctest-modules --junitxml=tests/resting-screen-test-results.xml
+      - name: Upload Resting Screen test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: resting-screen-test-results
+          path: tests/resting-screen-test-results.xml
