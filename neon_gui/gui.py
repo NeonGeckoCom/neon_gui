@@ -33,9 +33,7 @@ from ovos_utils import wait_for_exit_signal
 from ovos_utils import resolve_resource_file
 from ovos_utils.configuration import read_mycroft_config
 from neon_utils import LOG
-from mycroft_bus_client import Message
-
-from neon_messagebus.util.message_utils import get_messagebus
+from mycroft_bus_client import Message, MessageBusClient
 
 
 class SkillGUI:
@@ -349,7 +347,9 @@ class GUIManager:
         self.config = config
 
         # Establish Enclosure's websocket connection to the messagebus
-        self.bus = bus or get_messagebus()
+        self.bus = bus or MessageBusClient()
+        if not self.bus.started_running:
+            self.bus.run_in_thread()
 
         # This datastore holds the data associated with the GUI provider. Data
         # is stored in Namespaces, so you can have:
