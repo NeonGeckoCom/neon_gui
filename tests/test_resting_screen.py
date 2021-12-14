@@ -33,13 +33,30 @@ import unittest
 from threading import Thread
 from time import sleep
 
+from ovos_utils.messagebus import FakeBus
+
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from neon_gui.resting_screen import RestingScreen
+from neon_gui.gui import SkillGUI
 
 
 class TestRestingScreen(unittest.TestCase):
-    # TODO
-    pass
+    def test_resting_screen_init(self):
+        bus = FakeBus()
+        bus.started_running = True
+        resting_screen = RestingScreen(bus)
+        self.assertIsInstance(resting_screen.bus, FakeBus)
+        # self.assertIsInstance(resting_screen.gui, SkillGUI)
+        self.assertIsInstance(resting_screen.settings, dict)
+        self.assertFalse(resting_screen.has_show_page)
+        self.assertFalse(resting_screen.override_animations)
+        self.assertIsNone(resting_screen.resting_screen)
+        self.assertIsInstance(resting_screen.screens, dict)
+        self.assertIsNone(resting_screen.override_idle)
+        self.assertEqual(resting_screen.next, 0)
+        self.assertIsInstance(resting_screen.override_set_time, float)
+
+    # TODO: Test RestingScreen methods DM
 
 
 if __name__ == '__main__':

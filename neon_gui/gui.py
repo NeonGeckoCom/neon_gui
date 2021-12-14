@@ -34,6 +34,7 @@ from ovos_utils import resolve_resource_file
 from ovos_utils.configuration import read_mycroft_config
 from neon_utils import LOG
 from mycroft_bus_client import Message, MessageBusClient
+from neon_utils.skills.mycroft_skill import MycroftSkill
 
 
 class SkillGUI:
@@ -48,7 +49,7 @@ class SkillGUI:
         text: sessionData.time
     """
 
-    def __init__(self, skill):
+    def __init__(self, skill: MycroftSkill):
         self.__session_data = {}  # synced to GUI for use by this skill's pages
         self.page = None    # the active GUI page (e.g. QML template) to show
         self.skill = skill
