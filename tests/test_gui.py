@@ -32,27 +32,8 @@ import unittest
 
 from mycroft_bus_client import MessageBusClient
 
-from neon_utils.skills.mycroft_skill import MycroftSkill
-from ovos_utils.messagebus import FakeBus
-
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from neon_gui.gui import SkillGUI, GUIManager
-
-
-class TestSkillGui(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls) -> None:
-        cls.skill = MycroftSkill()
-        cls.skill.bind(FakeBus())
-        cls.skill_gui = SkillGUI(cls.skill)
-
-    def test_skill_gui_init(self):
-        self.assertIsNone(self.skill_gui.page)
-        self.assertEqual(self.skill_gui.skill, self.skill)
-        self.assertIsNone(self.skill_gui.on_gui_changed_callback)
-        self.assertIsInstance(self.skill_gui.config, dict)
-
-    # TODO: Test methods
+from neon_gui.gui import GUIManager
 
 
 class TestGuiManager(unittest.TestCase):

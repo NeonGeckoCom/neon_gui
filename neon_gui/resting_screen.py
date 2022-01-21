@@ -32,6 +32,7 @@ from threading import Lock
 from neon_utils import LOG
 from mycroft_bus_client import Message, MessageBusClient
 from neon_utils.skills.mycroft_skill import MycroftSkill
+from neon_utils.messagebus_utils import get_messagebus
 
 
 def compare_origin(m1, m2):
@@ -48,7 +49,7 @@ class RestingScreen:
     """
 
     def __init__(self, bus: MessageBusClient = None):
-        bus = bus or MessageBusClient()
+        bus = bus or get_messagebus()
         if not bus.started_running:
             bus.run_in_thread()
 

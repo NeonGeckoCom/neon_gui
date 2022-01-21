@@ -1,2 +1,1 @@
-pytest
 ovos-core[skills]~=0.0.1

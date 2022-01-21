@@ -1,16 +1,25 @@
-FROM python:3.8
+FROM python:3.8-slim
 
-ADD . /neon_core
-WORKDIR /neon_core
+LABEL vendor=neon.ai \
+    ai.neon.name="neon-gui"
+
+ENV NEON_CONFIG_PATH /config
 
 RUN apt-get update && \
     apt-get install -y \
     gcc \
+    g++ \
     python3-dev \
     swig \
-    libssl-dev  \
-    libfann-dev \
-    && pip install wheel \
-    && pip install .
+    libssl-dev \
+    libfann-dev
+
+ADD . /neon_gui
+WORKDIR /neon_gui
+
+RUN apt-get install -y git
+
+RUN pip install wheel \
+    && pip install .[docker]
 
 CMD ["neon_gui_service"]
