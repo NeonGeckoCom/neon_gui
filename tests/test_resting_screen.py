@@ -37,7 +37,6 @@ from ovos_utils.messagebus import FakeBus
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from neon_gui.resting_screen import RestingScreen
-from neon_gui.gui import SkillGUI
 
 
 class TestRestingScreen(unittest.TestCase):
