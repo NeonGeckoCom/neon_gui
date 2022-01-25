@@ -23,5 +23,3 @@ docker run -d \
 neon_gui
 ```
 >*Note:* The above example assumes `NEON_CONFIG_DIR` contains valid configuration
-
-TODO: Gui service needs to get the skills QML
