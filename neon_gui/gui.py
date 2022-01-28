@@ -26,15 +26,12 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE,  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from os.path import join
 from collections import namedtuple
 from threading import Lock
 from ovos_utils import wait_for_exit_signal
-from ovos_utils import resolve_resource_file
 from ovos_utils.configuration import read_mycroft_config
 from neon_utils import LOG
 from mycroft_bus_client import Message
-from neon_utils.skills.mycroft_skill import MycroftSkill
 from neon_utils.messagebus_utils import get_messagebus
 
 
