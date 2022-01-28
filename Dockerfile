@@ -17,8 +17,6 @@ RUN apt-get update && \
 ADD . /neon_gui
 WORKDIR /neon_gui
 
-RUN apt-get install -y git
-
 RUN pip install wheel \
     && pip install .[docker]
 

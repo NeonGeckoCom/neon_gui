@@ -1,4 +1,5 @@
-neon-utils~=0.12,>=0.14.3a8
+neon-utils~=0.14,>=0.14.3a15
+# TODO: Update to stable version spec
 ovos_utils~=0.0.12
 tornado~=6.0
 mycroft-messagebus-client~=0.9,!=0.9.2,!=0.9.3
