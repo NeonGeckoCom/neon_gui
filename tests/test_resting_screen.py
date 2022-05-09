@@ -30,8 +30,6 @@ import os
 import sys
 import unittest
 
-from threading import Thread
-from time import sleep
 
 from ovos_utils.messagebus import FakeBus
 
