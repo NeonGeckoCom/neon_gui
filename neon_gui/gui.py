@@ -27,10 +27,11 @@
 # SOFTWARE,  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from collections import namedtuple
+from copy import copy
 from threading import Lock
 from ovos_utils import wait_for_exit_signal
 from ovos_utils.configuration import read_mycroft_config
-from neon_utils import LOG
+from neon_utils.logger import LOG
 from mycroft_bus_client import Message
 from neon_utils.messagebus_utils import get_messagebus
 
@@ -274,7 +275,7 @@ class GUIManager:
                    })
 
         # Load any already stored Data
-        data = self.datastore.get(namespace, {})
+        data = copy(self.datastore.get(namespace, {}))
         for key in data:
             msg = {"type": "mycroft.session.set",
                    "namespace": namespace,

@@ -32,12 +32,13 @@ import sys
 import tornado.options
 import tornado.web as web
 
+from time import sleep
 from tornado import ioloop
 from tornado.websocket import WebSocketHandler
 from threading import Thread
 from typing import Optional, Awaitable
 from mycroft_bus_client import Message
-from neon_utils import LOG
+from neon_utils.logger import LOG
 from neon_utils.configuration_utils import get_neon_gui_config
 from neon_gui.gui import GUIManager, write_lock
 from neon_gui.resting_screen import RestingScreen
@@ -153,6 +154,8 @@ class NeonGUIService(Thread):
         super().__init__()
         self.config = config or get_neon_gui_config()
         self.debug = debug
+        self._app = None
+        self._loop = None
         self.setDaemon(daemonic)
 
     def run(self):
@@ -163,12 +166,12 @@ class NeonGUIService(Thread):
         LOG.info('GUI service started!')
         ioloop.IOLoop.instance().start()
 
-    @staticmethod
-    def _init_tornado():
+    def _init_tornado(self):
         # Disable all tornado logging so mycroft loglevel isn't overridden
         tornado.options.parse_command_line(sys.argv + ['--logging=None'])
         # get event loop for this thread
-        asyncio.set_event_loop(asyncio.new_event_loop())
+        self._loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(self._loop)
 
     def _init_gui(self):
         self.gui_manager = GUIManager()
@@ -178,7 +181,17 @@ class NeonGUIService(Thread):
         routes = [(self.config['route'], GUIWebsocketHandler)]
         application = web.Application(routes, debug=True)
         application.gui_service = self.gui_manager
-        application.listen(self.config['base_port'], self.config['host'])
+        self._app = application.listen(self.config['base_port'],
+                                       self.config['host'])
 
     def shutdown(self):
-        pass  # TODO
+        LOG.info("GUI Service shutting down")
+        self._app.stop()
+        loop = ioloop.IOLoop.instance()
+        loop.add_callback(loop.stop)
+        loop.close()
+        self._loop.call_soon_threadsafe(self._loop.stop)
+        while self._loop.is_running():
+            LOG.debug("Waiting for loop to stop...")
+            sleep(1)
+        self._loop.close()
