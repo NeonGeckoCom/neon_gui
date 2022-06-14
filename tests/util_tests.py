@@ -29,25 +29,41 @@
 import os
 import sys
 import unittest
+import shutil
 
-import mycroft_bus_client
-from ovos_utils.messagebus import FakeBus
+from os.path import join
+
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 
-class TestGuiManager(unittest.TestCase):
-    def test_gui_manager_init(self):
-        from neon_gui.gui import GUIManager
-        manager = GUIManager(FakeBus())
-        self.assertIsInstance(manager.config, dict)
-        self.assertIsInstance(manager.lang, str)
-        self.assertIsInstance(manager.bus, FakeBus)
-        self.assertIsInstance(manager.datastore, dict)
-        self.assertIsInstance(manager.loaded, list)
-        self.assertTrue(manager.explicit_move)
-        self.assertIsInstance(manager.active_namespaces, list)
+class TestUtils(unittest.TestCase):
+    def test_patch_config(self):
+        import json
+        from neon_gui.utils import use_neon_gui
+        from neon_utils.configuration_utils import init_config_dir
+        test_config_dir = os.path.join(os.path.dirname(__file__), "config")
+        os.makedirs(test_config_dir, exist_ok=True)
+        os.environ["XDG_CONFIG_HOME"] = test_config_dir
+        use_neon_gui(init_config_dir)()
 
-    # TODO: Test methods
+        with open(join(test_config_dir, "OpenVoiceOS", 'ovos.conf')) as f:
+            ovos_conf = json.load(f)
+        self.assertEqual(ovos_conf['submodule_mappings']['neon_gui'],
+                         "neon_core")
+        self.assertIsInstance(ovos_conf['module_overrides']['neon_core'], dict)
+
+        from neon_speech.utils import patch_config
+        test_config = {"new_key": {'val': True}}
+        patch_config(test_config)
+        conf_file = os.path.join(test_config_dir, 'neon',
+                                 'neon.conf')
+        self.assertTrue(os.path.isfile(conf_file))
+        with open(conf_file) as f:
+            config = json.load(f)
+
+        self.assertTrue(config['new_key']['val'])
+        shutil.rmtree(test_config_dir)
+        os.environ.pop("XDG_CONFIG_HOME")
 
 
 if __name__ == '__main__':

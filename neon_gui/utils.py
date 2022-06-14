@@ -26,35 +26,31 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE,  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import sys
-import unittest
+from tempfile import mkstemp
+from neon_utils.logger import LOG
+from neon_utils.packaging_utils import get_package_dependencies
 
 
-from ovos_utils.messagebus import FakeBus
+def patch_config(config: dict = None):
+    """
+    Write the specified speech configuration to the global config file
+    :param config: Mycroft-compatible configuration override
+    """
+    from mycroft.configuration import USER_CONFIG, LocalConf
 
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from neon_gui.resting_screen import RestingScreen
-
-
-class TestRestingScreen(unittest.TestCase):
-    def test_resting_screen_init(self):
-        bus = FakeBus()
-        bus.started_running = True
-        resting_screen = RestingScreen(bus)
-        self.assertIsInstance(resting_screen.bus, FakeBus)
-        # self.assertIsInstance(resting_screen.gui, SkillGUI)
-        self.assertIsInstance(resting_screen.settings, dict)
-        self.assertFalse(resting_screen.has_show_page)
-        self.assertFalse(resting_screen.override_animations)
-        self.assertIsNone(resting_screen.resting_screen)
-        self.assertIsInstance(resting_screen.screens, dict)
-        self.assertIsNone(resting_screen.override_idle)
-        self.assertEqual(resting_screen.next, 0)
-        self.assertIsInstance(resting_screen.override_set_time, float)
-
-    # TODO: Test RestingScreen methods DM
+    config = config or dict()
+    local_config = LocalConf(USER_CONFIG)
+    local_config.update(config)
+    local_config.store()
 
 
-if __name__ == '__main__':
-    unittest.main()
+def use_neon_gui(func):
+    """
+    Wrapper to ensure call originates from neon_gui for stack checks.
+    This is used for ovos-utils config platform detection which uses the stack
+    to determine which module config to return.
+    """
+    def wrapper(*args, **kwargs):
+        return func(*args, **kwargs)
+    return wrapper
+
