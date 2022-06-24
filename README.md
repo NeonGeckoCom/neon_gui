@@ -19,7 +19,5 @@ to start the container.
 docker run -d \
 --name=neon_gui \
 --network=host \
--v ${NEON_CONFIG_DIR}:/config \
 neon_gui
 ```
->*Note:* The above example assumes `NEON_CONFIG_DIR` contains valid configuration

@@ -45,6 +45,9 @@ class NeonGUIService(Thread, GUIService):
         self.setDaemon(daemonic)
         GUIService.__init__(self)
 
+    def run(self):
+        GUIService.run(self)
+
     def shutdown(self):
         LOG.info("GUI Service shutting down")
         self.status.set_stopping()

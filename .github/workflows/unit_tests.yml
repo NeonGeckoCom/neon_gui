@@ -27,7 +27,7 @@ jobs:
 
       - name: Test Utils
         run: |
-          pytest tests/unit_tests.py --doctest-modules --junitxml=tests/util-test-results.xml
+          pytest tests/util_tests.py --doctest-modules --junitxml=tests/util-test-results.xml
       - name: Upload utils test results
         uses: actions/upload-artifact@v2
         with:
