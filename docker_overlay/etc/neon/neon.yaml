@@ -13,3 +13,7 @@ gui_websocket:
   base_port: 18181
   route: /gui
   ssl: false
+gui:
+  extension: generic
+  generic:
+    homescreen_supported: false
