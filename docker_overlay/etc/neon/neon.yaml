@@ -14,6 +14,7 @@ gui_websocket:
   route: /gui
   ssl: false
 gui:
+  idle_display_skill: skill-ovos-homescreen.openvoiceos
   extension: generic
   generic:
-    homescreen_supported: false
+    homescreen_supported: true
