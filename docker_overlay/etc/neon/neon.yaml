@@ -18,3 +18,9 @@ gui:
   extension: generic
   generic:
     homescreen_supported: true
+system:
+  protected_keys:
+    remote:
+      - gui_websocket:host
+    user:
+      - gui_websocket:host
