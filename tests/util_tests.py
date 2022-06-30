@@ -39,6 +39,7 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 class TestUtils(unittest.TestCase):
     def test_patch_config(self):
         import json
+        import yaml
         from neon_gui.utils import use_neon_gui
         from neon_utils.configuration_utils import init_config_dir
         test_config_dir = os.path.join(os.path.dirname(__file__), "config")
@@ -51,15 +52,14 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(ovos_conf['submodule_mappings']['neon_gui'],
                          "neon_core")
         self.assertIsInstance(ovos_conf['module_overrides']['neon_core'], dict)
-
-        from neon_speech.utils import patch_config
+        from neon_gui.utils import patch_config
         test_config = {"new_key": {'val': True}}
         patch_config(test_config)
         conf_file = os.path.join(test_config_dir, 'neon',
-                                 'neon.conf')
+                                 'neon.yaml')
         self.assertTrue(os.path.isfile(conf_file))
         with open(conf_file) as f:
-            config = json.load(f)
+            config = yaml.safe_load(f)
 
         self.assertTrue(config['new_key']['val'])
         shutil.rmtree(test_config_dir)
