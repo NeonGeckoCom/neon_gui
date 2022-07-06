@@ -5,6 +5,8 @@ LABEL vendor=neon.ai \
 
 ENV NEON_CONFIG_PATH /config
 
+EXPOSE 18181
+
 RUN apt-get update && \
     apt-get install -y \
     gcc \
@@ -13,9 +15,6 @@ RUN apt-get update && \
     swig \
     libssl-dev \
     libfann-dev
-
-RUN apt-get install -y git
-# TODO: Remove after neon-utils release
 
 ADD . /neon_gui
 WORKDIR /neon_gui
