@@ -5,6 +5,8 @@ LABEL vendor=neon.ai \
 
 ENV NEON_CONFIG_PATH /config
 
+EXPOSE 18181
+
 RUN apt-get update && \
     apt-get install -y \
     gcc \
@@ -19,5 +21,7 @@ WORKDIR /neon_gui
 
 RUN pip install wheel \
     && pip install .[docker]
+
+COPY docker_overlay/ /
 
 CMD ["neon_gui_service"]

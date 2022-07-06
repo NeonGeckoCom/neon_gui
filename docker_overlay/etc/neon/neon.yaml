@@ -1,0 +1,26 @@
+MQ:
+  server: mq.2021.us
+  port: 5672
+  users:
+    mq_handler:
+      user: neon_api_utils
+      password: Klatchat2021
+signal:
+  use_signal_files: false
+  max_wait_seconds: 300
+gui_websocket:
+  host: 0.0.0.0
+  base_port: 18181
+  route: /gui
+  ssl: false
+gui:
+  idle_display_skill: skill-ovos-homescreen.openvoiceos
+  extension: generic
+  generic:
+    homescreen_supported: true
+system:
+  protected_keys:
+    remote:
+      - gui_websocket:host
+    user:
+      - gui_websocket:host

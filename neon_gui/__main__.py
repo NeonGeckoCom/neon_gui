@@ -31,9 +31,9 @@ from neon_gui.service import NeonGUIService
 from neon_utils.configuration_utils import init_config_dir
 
 
-def main():
+def main(*args, **kwargs):
     init_config_dir()
-    gui = NeonGUIService(daemonic=True)
+    gui = NeonGUIService(*args, **kwargs)
     gui.start()
     # TODO: Extract below logic to helper method in neon_utils DM
     event = Event()
