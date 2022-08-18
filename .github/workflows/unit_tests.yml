@@ -9,7 +9,7 @@ jobs:
   unit_tests:
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9]
+        python-version: [3.7, 3.8, 3.9, '3.10']
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -25,20 +25,11 @@ jobs:
           pip install -r requirements/requirements.txt
           pip install -r requirements/test_requirements.txt
 
-      - name: Test GUI
+      - name: Test Utils
         run: |
-          pytest tests/test_gui.py --doctest-modules --junitxml=tests/gui-test-results.xml
-      - name: Upload GUI test results
+          pytest tests/util_tests.py --doctest-modules --junitxml=tests/util-test-results.xml
+      - name: Upload utils test results
         uses: actions/upload-artifact@v2
         with:
-          name: gui-test-results
-          path: tests/gui-test-results.xml
-
-      - name: Test Resting Screen
-        run: |
-          pytest tests/test_resting_screen.py --doctest-modules --junitxml=tests/resting-screen-test-results.xml
-      - name: Upload Resting Screen test results
-        uses: actions/upload-artifact@v2
-        with:
-          name: resting-screen-test-results
-          path: tests/resting-screen-test-results.xml
+          name: util-test-results
+          path: tests/util-test-results.xml
