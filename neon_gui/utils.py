@@ -65,10 +65,13 @@ def add_neon_about_data():
     from datetime import datetime
 
     # Get Core version as a date string (incl. leading '0' in month)
-    core_version_parts = get_package_version_spec('neon_core').split('.')
-    core_version_parts[1] = f'0{core_version_parts[1]}'\
-        if len(core_version_parts[1]) == 1 else core_version_parts[1]
-    core_version = '.'.join(core_version_parts)
+    try:
+        core_version_parts = get_package_version_spec('neon_core').split('.')
+        core_version_parts[1] = f'0{core_version_parts[1]}'\
+            if len(core_version_parts[1]) == 1 else core_version_parts[1]
+        core_version = '.'.join(core_version_parts)
+    except ModuleNotFoundError:
+        core_version = "Unknown"
     extra_data = [{"display_key": "Neon Core Version",
                   "display_value": core_version}]
     try:
