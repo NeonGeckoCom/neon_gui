@@ -63,8 +63,14 @@ def add_neon_about_data():
     from ovos_utils.gui import extend_about_data
     from neon_utils.packaging_utils import get_package_version_spec
     from datetime import datetime
+
+    # Get Core version as a date string (incl. leading '0' in month)
+    core_version_parts = get_package_version_spec('neon_core').split('.')
+    core_version_parts[1] = f'0{core_version_parts[1]}'\
+        if len(core_version_parts) == 1 else core_version_parts[1]
+    core_version = '.'.join(core_version_parts)
     extra_data = [{"display_key": "Neon Core Version",
-                  "display_value": get_package_version_spec('neon_core')}]
+                  "display_value": core_version}]
     try:
         import json
         with open('/opt/neon/build_info.json') as f:
@@ -83,7 +89,7 @@ def add_neon_about_data():
                            'display_value': image_recipe_time})
         extra_data.append({'display_key': 'Core Updated',
                            'display_value': core_time})
-        if installed_core_spec != get_package_version_spec('neon_core'):
+        if installed_core_spec != core_version:
             extra_data.append({'display_key': "Shipped Core Version",
                                'display_value': installed_core_spec})
     except FileNotFoundError:
