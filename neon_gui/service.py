@@ -36,6 +36,12 @@ from neon_utils.logger import LOG
 from mycroft.gui.service import GUIService
 
 
+def on_ready():
+    LOG.info("GUI Service Ready")
+    from neon_gui.utils import add_neon_about_data
+    add_neon_about_data()
+
+
 class NeonGUIService(Thread, GUIService):
     def __init__(self, gui_config=None, daemonic=False):
         if gui_config:
@@ -43,7 +49,7 @@ class NeonGUIService(Thread, GUIService):
             patch_config(gui_config)
         Thread.__init__(self)
         self.setDaemon(daemonic)
-        GUIService.__init__(self)
+        GUIService.__init__(self, ready_hook=on_ready)
 
     def run(self):
         GUIService.run(self)

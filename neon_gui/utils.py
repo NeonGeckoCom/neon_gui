@@ -55,3 +55,32 @@ def use_neon_gui(func):
         return func(*args, **kwargs)
     return wrapper
 
+
+def add_neon_about_data():
+    """
+    Update the About menu in ovos-shell with Neon information
+    """
+    from ovos_utils.gui import extend_about_data
+    from neon_utils.packaging_utils import get_neon_core_version
+    from datetime import datetime
+    extra_data = {
+        "Neon Core Version": get_neon_core_version()
+    }
+    try:
+        import json
+        with open('/opt/neon/build_info.json') as f:
+            build_info = json.load(f)
+        image_recipe_time = \
+            datetime.fromtimestamp(build_info.get('image').get('time')).isoformat()
+        core_time = datetime.fromtimestamp(build_info.get('core').get('time'))
+        installed_core_spec = build_info.get('core').get('version')
+        extra_data['Image Updated'] = image_recipe_time
+        extra_data["Core Updated"] = core_time
+        if installed_core_spec != extra_data["Neon Core Version"]:
+            extra_data["Shipped Core Version"] = installed_core_spec
+    except FileNotFoundError:
+        pass
+
+    extra_data = [{'display_key': k, 'display_value': v}
+                  for k, v in extra_data.items()]
+    extend_about_data(extra_data)
