@@ -67,7 +67,7 @@ def add_neon_about_data():
     # Get Core version as a date string (incl. leading '0' in month)
     core_version_parts = get_package_version_spec('neon_core').split('.')
     core_version_parts[1] = f'0{core_version_parts[1]}'\
-        if len(core_version_parts) == 1 else core_version_parts[1]
+        if len(core_version_parts[1]) == 1 else core_version_parts[1]
     core_version = '.'.join(core_version_parts)
     extra_data = [{"display_key": "Neon Core Version",
                   "display_value": core_version}]
@@ -78,11 +78,9 @@ def add_neon_about_data():
         image_recipe_time = datetime.fromtimestamp(build_info.get('image')
                                                    .get('time'))\
             .replace(microsecond=0).isoformat()
-        LOG.info(f"Image time: {image_recipe_time}")
         core_time = datetime.fromtimestamp(build_info.get('core')
                                            .get('time'))\
             .replace(microsecond=0).isoformat()
-        LOG.info(f"Core time: {core_time}")
 
         installed_core_spec = build_info.get('core').get('version')
         extra_data.append({'display_key': 'Image Updated',
@@ -95,16 +93,14 @@ def add_neon_about_data():
     except FileNotFoundError:
         pass
 
-    module_versions = [
-        {'display_key': 'neon_speech',
-         'display_value': get_package_version_spec('neon_speech')},
-        {'display_key': 'neon_audio',
-         'display_value': get_package_version_spec('neon_audio')},
-        {'display_key': 'neon_gui',
-         'display_value': get_package_version_spec('neon_gui')},
-        {'display_key': 'neon_enclosure',
-         'display_value': get_package_version_spec('neon_enclosure')}
-    ]
-    extra_data.extend(module_versions)
-    LOG.info(f"Updating GUI Data with: {extra_data}")
+    for pkg in ('neon_speech', 'neon_audio', 'neon_gui', 'neon_enclosure'):
+        try:
+            pkg_data = {"display_key": pkg,
+                        "display_value": get_package_version_spec(pkg)}
+        except ModuleNotFoundError:
+            pkg_data = {"display_key": pkg,
+                        "display_value": "Not Installed"}
+        extra_data.append(pkg_data)
+
+    LOG.debug(f"Updating GUI Data with: {extra_data}")
     extend_about_data(extra_data)
