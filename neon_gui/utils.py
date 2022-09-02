@@ -83,4 +83,5 @@ def add_neon_about_data():
 
     extra_data = [{'display_key': k, 'display_value': v}
                   for k, v in extra_data.items()]
+    LOG.info(f"Updating GUI Data with: {extra_data}")
     extend_about_data(extra_data)

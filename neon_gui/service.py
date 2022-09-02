@@ -40,6 +40,7 @@ def on_ready():
     LOG.info("GUI Service Ready")
     from neon_gui.utils import add_neon_about_data
     add_neon_about_data()
+    LOG.info(f"Updated GUI About Data")
 
 
 class NeonGUIService(Thread, GUIService):
