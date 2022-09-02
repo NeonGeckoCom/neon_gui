@@ -70,9 +70,13 @@ def add_neon_about_data():
         import json
         with open('/opt/neon/build_info.json') as f:
             build_info = json.load(f)
-        image_recipe_time = \
-            datetime.fromtimestamp(build_info.get('image').get('time')).isoformat()
-        core_time = datetime.fromtimestamp(build_info.get('core').get('time'))
+        image_recipe_time = datetime.fromtimestamp(build_info.get('image')
+                                                   .get('time')).isoformat()
+        LOG.info(f"Image time: {image_recipe_time}")
+        core_time = datetime.fromtimestamp(build_info.get('core')
+                                           .get('time')).isoformat()
+        LOG.info(f"Core time: {core_time}")
+
         installed_core_spec = build_info.get('core').get('version')
         extra_data['Image Updated'] = image_recipe_time
         extra_data["Core Updated"] = core_time
