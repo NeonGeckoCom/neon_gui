@@ -99,6 +99,6 @@ def add_neon_about_data():
         {'display_key': 'neon_enclosure',
          'display_value': get_package_version_spec('neon_enclosure')}
     ]
-    extra_data.append(module_versions)
+    extra_data.extend(module_versions)
     LOG.info(f"Updating GUI Data with: {extra_data}")
     extend_about_data(extra_data)
