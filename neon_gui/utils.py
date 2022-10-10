@@ -26,9 +26,7 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE,  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from tempfile import mkstemp
 from neon_utils.logger import LOG
-from neon_utils.packaging_utils import get_package_dependencies
 
 
 def patch_config(config: dict = None):
