@@ -29,7 +29,7 @@
 from time import sleep
 from tornado import ioloop
 from threading import Thread
-from neon_utils.logger import LOG
+from ovos_utils.log import LOG
 
 from mycroft.gui.service import GUIService
 

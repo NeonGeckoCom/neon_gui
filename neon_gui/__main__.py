@@ -29,10 +29,12 @@
 from threading import Event
 from neon_gui.service import NeonGUIService
 from neon_utils.configuration_utils import init_config_dir
+from neon_utils.log_utils import init_log
 
 
 def main(*args, **kwargs):
     init_config_dir()
+    init_log(log_name="gui")
     gui = NeonGUIService(*args, **kwargs)
     gui.start()
     # TODO: Extract below logic to helper method in neon_utils DM
