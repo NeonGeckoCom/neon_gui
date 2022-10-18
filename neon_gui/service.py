@@ -36,19 +36,46 @@ from mycroft.gui.service import GUIService
 
 def on_ready():
     LOG.info("GUI Service Ready")
-    from neon_gui.utils import add_neon_about_data
-    add_neon_about_data()
-    LOG.info(f"Updated GUI About Data")
+
+
+def wrapped_ready_hook(ready_hook: callable):
+    def wrapper():
+        from neon_gui.utils import add_neon_about_data
+        add_neon_about_data()
+        LOG.info(f"Updated GUI About Data")
+        ready_hook()
+    return wrapper
+
+
+def on_stopping():
+    LOG.info('Messagebus service is shutting down...')
+
+
+def on_error(e='Unknown'):
+    LOG.error('Messagebus service failed to launch ({}).'.format(repr(e)))
+
+
+def on_alive():
+    LOG.debug("Messagebus client alive")
+
+
+def on_started():
+    LOG.debug("Messagebus client started")
 
 
 class NeonGUIService(Thread, GUIService):
-    def __init__(self, gui_config=None, daemonic=False):
+    def __init__(self, ready_hook=on_ready, error_hook=on_error,
+                 stopping_hook=on_stopping, alive_hook=on_alive,
+                 started_hook=on_started, gui_config=None, daemonic=False):
         if gui_config:
             from neon_gui.utils import patch_config
             patch_config(gui_config)
         Thread.__init__(self)
         self.setDaemon(daemonic)
-        GUIService.__init__(self, ready_hook=on_ready)
+        ready_hook = wrapped_ready_hook(ready_hook)
+        GUIService.__init__(self, alive_hook=alive_hook,
+                            started_hook=started_hook, ready_hook=ready_hook,
+                            error_hook=error_hook, stopping_hook=stopping_hook)
 
     def run(self):
         GUIService.run(self)
