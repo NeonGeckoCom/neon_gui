@@ -28,7 +28,7 @@
 
 from time import sleep
 from tornado import ioloop
-from threading import Thread
+from threading import Thread, Event
 from ovos_utils.log import LOG
 
 from mycroft.gui.service import GUIService
@@ -72,18 +72,23 @@ class NeonGUIService(Thread, GUIService):
             patch_config(gui_config)
         Thread.__init__(self)
         self.setDaemon(daemonic)
+        self.setName('GUI')
+        self.started = Event()
         ready_hook = wrapped_ready_hook(ready_hook)
         GUIService.__init__(self, alive_hook=alive_hook,
                             started_hook=started_hook, ready_hook=ready_hook,
                             error_hook=error_hook, stopping_hook=stopping_hook)
 
     def run(self):
+        self.status.set_started()
         GUIService.run(self)
+        self.started.set()
 
     def shutdown(self):
         LOG.info("GUI Service shutting down")
         self.status.set_stopping()
-        # self.gui.gui_bus.stop()
+        self.gui.core_bus.close()
+        self.bus.close()
 
         loop = ioloop.IOLoop.instance()
         loop.add_callback(loop.stop)

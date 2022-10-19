@@ -33,3 +33,12 @@ jobs:
         with:
           name: util-test-results
           path: tests/util-test-results.xml
+
+      - name: Test Service
+        run: |
+          pytest tests/test_gui_service.py --doctest-modules --junitxml=tests/gui-service-test-results.xml
+      - name: Upload GUI Service test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: gui-service-test-results
+          path: tests/gui-service-test-results.xml
