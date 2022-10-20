@@ -31,10 +31,17 @@ from neon_gui.service import NeonGUIService
 from neon_utils.configuration_utils import init_config_dir
 from neon_utils.log_utils import init_log
 
+from mycroft.lock import Lock
+
 
 def main(*args, **kwargs):
     init_config_dir()
     init_log(log_name="gui")
+
+    from mycroft.util import reset_sigint_handler
+    reset_sigint_handler()
+    Lock("enclosure")
+
     gui = NeonGUIService(*args, **kwargs)
     gui.start()
     wait_for_exit_signal()
