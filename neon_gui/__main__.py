@@ -40,7 +40,7 @@ def main(*args, **kwargs):
 
     from mycroft.util import reset_sigint_handler
     reset_sigint_handler()
-    Lock("enclosure")
+    Lock("gui")
 
     gui = NeonGUIService(*args, **kwargs)
     gui.start()
