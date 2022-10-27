@@ -33,6 +33,8 @@ from ovos_utils.log import LOG
 
 from mycroft.gui.service import GUIService
 
+from neon_gui.utils import update_gui_ip_address
+
 
 def on_ready():
     LOG.info("GUI Service Ready")
@@ -82,6 +84,7 @@ class NeonGUIService(Thread, GUIService):
     def run(self):
         self.status.set_started()
         GUIService.run(self)
+        self.bus.on("ovos.wifi.setup.completed", update_gui_ip_address)
         self.started.set()
 
     def shutdown(self):

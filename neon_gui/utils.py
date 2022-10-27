@@ -26,7 +26,9 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE,  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+from mycroft_bus_client import Message
 from ovos_utils.log import LOG
+from ovos_utils.gui import extend_about_data
 
 
 def patch_config(config: dict = None):
@@ -58,7 +60,6 @@ def add_neon_about_data():
     """
     Update the About menu in ovos-shell with Neon information
     """
-    from ovos_utils.gui import extend_about_data
     from neon_utils.packaging_utils import get_package_version_spec
     from datetime import datetime
 
@@ -104,4 +105,15 @@ def add_neon_about_data():
         extra_data.append(pkg_data)
 
     LOG.debug(f"Updating GUI Data with: {extra_data}")
+    extend_about_data(extra_data)
+
+
+def update_gui_ip_address(_: Message):
+    """
+    Update the IP Address in the GUI on network changes.
+    """
+    from ovos_utils.network_utils import get_ip
+    extra_data = [{"display_key": "Local Address",
+                   "display_value": get_ip()}]
+    LOG.debug("Updating GUI IP Address")
     extend_about_data(extra_data)
