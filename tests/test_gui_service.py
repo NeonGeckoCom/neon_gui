@@ -26,27 +26,53 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE,  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from ovos_utils import wait_for_exit_signal
+import os
+import sys
+import unittest
+
+from mock.mock import Mock
+
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from neon_gui.service import NeonGUIService
-from neon_utils.configuration_utils import init_config_dir
-from neon_utils.log_utils import init_log
-
-from mycroft.lock import Lock
 
 
-def main(*args, **kwargs):
-    init_config_dir()
-    init_log(log_name="gui")
+class TestGUIService(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        from neon_messagebus.service import NeonBusService
+        cls.messagebus = NeonBusService(debug=True, daemonic=True)
+        cls.messagebus.start()
 
-    from mycroft.util import reset_sigint_handler
-    reset_sigint_handler()
-    Lock("gui")
+    @classmethod
+    def tearDownClass(cls) -> None:
+        cls.messagebus.shutdown()
 
-    gui = NeonGUIService(*args, **kwargs)
-    gui.start()
-    wait_for_exit_signal()
-    gui.shutdown()
+    def test_gui_service(self):
+        alive = Mock()
+        started = Mock()
+        ready = Mock()
+        stopping = Mock()
+        service = NeonGUIService(alive_hook=alive, started_hook=started,
+                                 ready_hook=ready, stopping_hook=stopping,
+                                 daemonic=True)
+        # alive.assert_called_once()
+        started.assert_not_called()
+        ready.assert_not_called()
+        stopping.assert_not_called()
+
+        service.start()
+        service.started.wait()
+
+        alive.assert_called_once()
+        started.assert_called_once()
+        ready.assert_called_once()
+        stopping.assert_not_called()
+
+        service.shutdown()
+        stopping.assert_called_once()
+        service.join(10)
+        self.assertFalse(service.is_alive())
 
 
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    unittest.main()

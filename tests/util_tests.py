@@ -33,6 +33,8 @@ import shutil
 
 from os.path import join
 
+from mock import mock
+
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 
@@ -64,6 +66,18 @@ class TestUtils(unittest.TestCase):
         self.assertTrue(config['new_key']['val'])
         shutil.rmtree(test_config_dir)
         os.environ.pop("XDG_CONFIG_HOME")
+
+    @mock.patch('ovos_utils.gui.extend_about_data')
+    def test_add_about_data(self, extend_data):
+        from neon_gui.utils import add_neon_about_data
+        add_neon_about_data()
+        extend_data.assert_called_once()
+        data = extend_data.call_args[0][0]
+        self.assertIsInstance(data, list)
+        for i in data:
+            self.assertIsInstance(i, dict)
+            self.assertIsInstance(i['display_key'], str)
+            self.assertIsInstance(i['display_value'], str)
 
 
 if __name__ == '__main__':
