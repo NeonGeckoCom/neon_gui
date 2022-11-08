@@ -58,7 +58,7 @@ def use_neon_gui(func):
 
 def add_neon_about_data():
     """
-    Update the About menu in ovos-shell with Neon information
+    Update the About menu in ovos-shell with Neon build information
     """
     from neon_utils.packaging_utils import get_package_version_spec
     from datetime import datetime
@@ -77,18 +77,25 @@ def add_neon_about_data():
         import json
         with open('/opt/neon/build_info.json') as f:
             build_info = json.load(f)
-        image_recipe_time = datetime.fromtimestamp(build_info.get('image')
-                                                   .get('time'))\
-            .replace(microsecond=0).isoformat()
-        core_time = datetime.fromtimestamp(build_info.get('core')
-                                           .get('time'))\
-            .replace(microsecond=0).isoformat()
+        image_recipe_time = datetime.fromtimestamp(
+            build_info.get('image').get('time')).strftime('%Y-%m-%d')
+        core_time = datetime.fromtimestamp(
+            build_info.get('core').get('time')).strftime('%Y-%m-%d')
 
         installed_core_spec = build_info.get('core').get('version')
         extra_data.append({'display_key': 'Image Updated',
                            'display_value': image_recipe_time})
         extra_data.append({'display_key': 'Core Updated',
                            'display_value': core_time})
+
+        if build_info.get('base_os'):
+            base_os = build_info['base_os']['name']
+            if build_info['base_os'].get('time', 'unknown') != 'unknown':
+                time_str = datetime.fromtimestamp(
+                    build_info['base_os'].get('time')).strftime('%Y-%m-%d')
+                base_os = f'{base_os} ({time_str})'
+            extra_data.append({'display_key': 'Base OS',
+                               'display_value': base_os})
         if installed_core_spec != core_version:
             extra_data.append({'display_key': "Shipped Core Version",
                                'display_value': installed_core_spec})
