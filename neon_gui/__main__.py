@@ -27,16 +27,18 @@
 # SOFTWARE,  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from ovos_utils import wait_for_exit_signal
+from ovos_utils.log import LOG
 from neon_gui.service import NeonGUIService
 from neon_utils.configuration_utils import init_config_dir
 from neon_utils.log_utils import init_log
+from neon_utils.process_utils import start_malloc, snapshot_malloc, print_malloc
 from ovos_utils.process_utils import PIDLock as Lock
 
 
 def main(*args, **kwargs):
     init_config_dir()
     init_log(log_name="gui")
-
+    malloc_running = start_malloc(stack_depth=4)
     from ovos_utils.process_utils import reset_sigint_handler
     reset_sigint_handler()
     Lock("gui")
@@ -44,6 +46,11 @@ def main(*args, **kwargs):
     gui = NeonGUIService(*args, **kwargs)
     gui.start()
     wait_for_exit_signal()
+    if malloc_running:
+        try:
+            print_malloc(snapshot_malloc())
+        except Exception as e:
+            LOG.error(e)
     gui.shutdown()
 
 
