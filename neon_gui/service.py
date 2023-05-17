@@ -30,8 +30,7 @@ from time import sleep
 from tornado import ioloop
 from threading import Thread, Event
 from ovos_utils.log import LOG
-
-from mycroft.gui.service import GUIService
+from ovos_gui.service import GUIService
 
 from neon_gui.utils import update_gui_ip_address
 
@@ -68,7 +67,7 @@ def on_started():
 class NeonGUIService(Thread, GUIService):
     def __init__(self, ready_hook=on_ready, error_hook=on_error,
                  stopping_hook=on_stopping, alive_hook=on_alive,
-                 started_hook=on_started, gui_config=None, daemonic=False):
+                 started_hook=on_started, gui_config=None, daemonic=False,):
         if gui_config:
             from neon_gui.utils import patch_config
             patch_config(gui_config)
