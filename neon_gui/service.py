@@ -49,19 +49,19 @@ def wrapped_ready_hook(ready_hook: callable):
 
 
 def on_stopping():
-    LOG.info('Messagebus service is shutting down...')
+    LOG.info('GUI service is shutting down...')
 
 
 def on_error(e='Unknown'):
-    LOG.error('Messagebus service failed to launch ({}).'.format(repr(e)))
+    LOG.error('GUI service failed to launch ({}).'.format(repr(e)))
 
 
 def on_alive():
-    LOG.debug("Messagebus client alive")
+    LOG.debug("GUI client alive")
 
 
 def on_started():
-    LOG.debug("Messagebus client started")
+    LOG.debug("GUI client started")
 
 
 class NeonGUIService(Thread, GUIService):

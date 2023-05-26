@@ -26,30 +26,29 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE,  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from ovos_utils import wait_for_exit_signal
-from ovos_utils.log import LOG
-from neon_gui.service import NeonGUIService
-from neon_utils.log_utils import init_log
-from neon_utils.process_utils import start_malloc, snapshot_malloc, print_malloc
-from ovos_utils.process_utils import reset_sigint_handler, PIDLock
+import click
+
+from click_default_group import DefaultGroup
+from neon_utils.packaging_utils import get_package_version_spec
+from neon_utils.configuration_utils import init_config_dir
 
 
-def main(*args, **kwargs):
-    init_log(log_name="gui")
-    malloc_running = start_malloc(stack_depth=4)
-    reset_sigint_handler()
-    PIDLock("gui")
-
-    gui = NeonGUIService(*args, **kwargs)
-    gui.start()
-    wait_for_exit_signal()
-    if malloc_running:
-        try:
-            print_malloc(snapshot_malloc())
-        except Exception as e:
-            LOG.error(e)
-    gui.shutdown()
+@click.group("neon-gui", cls=DefaultGroup,
+             no_args_is_help=True, invoke_without_command=True,
+             help="Neon GUI module Commands\n\n"
+                  "See also: neon COMMAND --help")
+@click.option("--version", "-v", is_flag=True, required=False,
+              help="Print the current version")
+def neon_gui_cli(version: bool = False):
+    if version:
+        click.echo(f"neon_gui version "
+                   f"{get_package_version_spec('neon_gui')}")
 
 
-if __name__ == "__main__":
+@neon_gui_cli.command(help="Start Neon GUI module")
+def run():
+    init_config_dir()
+    from neon_gui.__main__ import main
+    click.echo("Starting GUI Service")
     main()
+    click.echo("GUI Service Shutdown")
