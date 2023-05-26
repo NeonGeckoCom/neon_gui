@@ -72,8 +72,8 @@ class NeonGUIService(Thread, GUIService):
             from neon_gui.utils import patch_config
             patch_config(gui_config)
         Thread.__init__(self)
-        self.setDaemon(daemonic)
-        self.setName('GUI')
+        self.daemon = daemonic
+        self.name = 'GUI'
         self.started = Event()
         ready_hook = wrapped_ready_hook(ready_hook)
         GUIService.__init__(self, alive_hook=alive_hook,
