@@ -77,8 +77,8 @@ class TestGUIService(unittest.TestCase):
 class TestCLI(unittest.TestCase):
     runner = CliRunner()
 
-    @patch("neon_enclosure.cli.init_config_dir")
-    @patch("neon_enclosure.__main__.main")
+    @patch("neon_gui.cli.init_config_dir")
+    @patch("neon_gui.__main__.main")
     def test_run(self, main, init_config):
         from neon_gui.cli import run
         self.runner.invoke(run)
