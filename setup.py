@@ -78,6 +78,7 @@ setup(
     long_description_content_type="text/markdown",
     entry_points={
         'console_scripts': [
+            # TODO: Deprecate `neon_gui_service` entrypoint
             'neon_gui_service=neon_gui.__main__:main',
             'neon-gui=neon_gui.cli:neon_gui_cli'
         ]
