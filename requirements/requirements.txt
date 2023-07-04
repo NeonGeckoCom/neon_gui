@@ -4,6 +4,6 @@ ovos-config~=0.0.10
 click~=8.0
 click-default-group~=1.2
 tornado~=6.0
-ovos-bus-client~=0.0.4
+ovos-bus-client~=0.0.5
 # TODO: Below pinned for stable NeonCore
-ovos-gui==0.0.3a6
+ovos-gui==0.0.3a7
