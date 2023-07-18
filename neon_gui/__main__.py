@@ -51,5 +51,12 @@ def main(*args, **kwargs):
     gui.shutdown()
 
 
+def deprecated_entrypoint():
+    from ovos_utils.log import log_deprecation
+    log_deprecation("Use `neon-gui run` in place of "
+                    "`neon_gui_service`", "2.0.0")
+    main()
+
+
 if __name__ == "__main__":
     main()
