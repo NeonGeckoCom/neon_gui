@@ -3,7 +3,8 @@ FROM python:3.8-slim
 LABEL vendor=neon.ai \
     ai.neon.name="neon-gui"
 
-ENV NEON_CONFIG_PATH /config
+ENV OVOS_CONFIG_BASE_FOLDER neon
+ENV OVOS_CONFIG_FILENAME neon.yaml
 
 EXPOSE 18181
 
@@ -24,4 +25,4 @@ RUN pip install wheel \
 
 COPY docker_overlay/ /
 
-CMD ["neon_gui_service"]
+CMD ["neon-gui", "run"]
