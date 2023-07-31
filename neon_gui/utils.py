@@ -96,7 +96,9 @@ def add_neon_about_data():
                     time_str = datetime.fromtimestamp(base_os_time).strftime(
                         '%Y-%m-%d')
                 else:
-                    time_str = base_os_time
+                    time_str = str(base_os_time).replace('_',
+                                                         ' ', 1).replace('_',
+                                                                         ':', 1)
                 base_os = f'{base_os} ({time_str})'
             extra_data.append({'display_key': 'Base OS',
                                'display_value': base_os})
