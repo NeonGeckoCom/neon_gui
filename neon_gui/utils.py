@@ -90,9 +90,13 @@ def add_neon_about_data():
 
         if build_info.get('base_os'):
             base_os = build_info['base_os']['name']
-            if build_info['base_os'].get('time', 'unknown') != 'unknown':
-                time_str = datetime.fromtimestamp(
-                    build_info['base_os'].get('time')).strftime('%Y-%m-%d')
+            base_os_time = build_info['base_os'].get('time', 'unknown')
+            if base_os_time != 'unknown':
+                if isinstance(base_os_time, float):
+                    time_str = datetime.fromtimestamp(base_os_time).strftime(
+                        '%Y-%m-%d')
+                else:
+                    time_str = base_os_time
                 base_os = f'{base_os} ({time_str})'
             extra_data.append({'display_key': 'Base OS',
                                'display_value': base_os})
@@ -101,6 +105,8 @@ def add_neon_about_data():
                                'display_value': installed_core_spec})
     except FileNotFoundError:
         pass
+    except Exception as e:
+        LOG.exception(e)
 
     for pkg in ('neon_speech', 'neon_audio', 'neon_gui', 'neon_enclosure'):
         try:
