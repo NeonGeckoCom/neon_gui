@@ -71,7 +71,7 @@ def add_neon_about_data():
         core_version = '.'.join(core_version_parts)
     except ModuleNotFoundError:
         core_version = "Unknown"
-    extra_data = [{"display_key": "Neon Core Version",
+    extra_data = [{"display_key": "Neon Core",
                   "display_value": core_version}]
     try:
         import json
@@ -79,7 +79,7 @@ def add_neon_about_data():
             build_info = json.load(f)
         if build_info.get("image", {}).get("version"):
             # Neon OS 2.0; use neon-debos version
-            extra_data.append({"display_key": "Neon OS Version",
+            extra_data.append({"display_key": "Neon OS",
                                "display_value": build_info['image']['version']})
         else:
             extra_data.extend(_get_legacy_image_metadata(build_info,
