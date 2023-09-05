@@ -29,6 +29,7 @@
 from ovos_bus_client import Message
 from ovos_utils.log import LOG
 from ovos_utils.gui import extend_about_data
+from datetime import datetime
 
 
 def patch_config(config: dict = None):
@@ -61,50 +62,28 @@ def add_neon_about_data():
     Update the About menu in ovos-shell with Neon build information
     """
     from neon_utils.packaging_utils import get_package_version_spec
-    from datetime import datetime
 
-    # Get Core version as a date string (incl. leading '0' in month)
+    # Get Core version
     try:
         core_version_parts = get_package_version_spec('neon_core').split('.')
-        core_version_parts[1] = f'0{core_version_parts[1]}'\
-            if len(core_version_parts[1]) == 1 else core_version_parts[1]
+        # core_version_parts[1] = f'0{core_version_parts[1]}'\
+        #     if len(core_version_parts[1]) == 1 else core_version_parts[1]
         core_version = '.'.join(core_version_parts)
     except ModuleNotFoundError:
         core_version = "Unknown"
-    extra_data = [{"display_key": "Neon Core Version",
+    extra_data = [{"display_key": "Neon Core",
                   "display_value": core_version}]
     try:
         import json
         with open('/opt/neon/build_info.json') as f:
             build_info = json.load(f)
-        image_recipe_time = datetime.fromtimestamp(
-            build_info.get('image').get('time')).strftime('%Y-%m-%d')
-        core_time = datetime.fromtimestamp(
-            build_info.get('core').get('time')).strftime('%Y-%m-%d')
-
-        installed_core_spec = build_info.get('core').get('version')
-        extra_data.append({'display_key': 'Image Updated',
-                           'display_value': image_recipe_time})
-        extra_data.append({'display_key': 'Core Updated',
-                           'display_value': core_time})
-
-        if build_info.get('base_os'):
-            base_os = build_info['base_os']['name']
-            base_os_time = build_info['base_os'].get('time', 'unknown')
-            if base_os_time != 'unknown':
-                if isinstance(base_os_time, float):
-                    time_str = datetime.fromtimestamp(base_os_time).strftime(
-                        '%Y-%m-%d')
-                else:
-                    time_str = str(base_os_time).replace('_',
-                                                         ' ', 1).replace('_',
-                                                                         ':', 1)
-                base_os = f'{base_os} ({time_str})'
-            extra_data.append({'display_key': 'Base OS',
-                               'display_value': base_os})
-        if installed_core_spec != core_version:
-            extra_data.append({'display_key': "Shipped Core Version",
-                               'display_value': installed_core_spec})
+        if build_info.get("image", {}).get("version"):
+            # Neon OS 2.0; use neon-debos version
+            extra_data.append({"display_key": "Neon OS",
+                               "display_value": build_info['image']['version']})
+        else:
+            extra_data.extend(_get_legacy_image_metadata(build_info,
+                                                         core_version))
     except FileNotFoundError:
         pass
     except Exception as e:
@@ -121,6 +100,41 @@ def add_neon_about_data():
 
     LOG.debug(f"Updating GUI Data with: {extra_data}")
     extend_about_data(extra_data)
+
+
+def _get_legacy_image_metadata(build_info: dict, core_version: str) -> list:
+    """
+    Get GUI data model for pre-Neon OS 2.0 installations
+    """
+    extra_data = []
+    image_recipe_time = datetime.fromtimestamp(
+            build_info.get('image').get('time')).strftime('%Y-%m-%d')
+    core_time = datetime.fromtimestamp(
+        build_info.get('core').get('time')).strftime('%Y-%m-%d')
+
+    installed_core_spec = build_info.get('core').get('version')
+    extra_data.append({'display_key': 'Image Updated',
+                       'display_value': image_recipe_time})
+    extra_data.append({'display_key': 'Core Updated',
+                       'display_value': core_time})
+
+    if build_info.get('base_os'):
+        base_os = build_info['base_os']['name']
+        base_os_time = build_info['base_os'].get('time', 'unknown')
+        if base_os_time != 'unknown':
+            if isinstance(base_os_time, float):
+                time_str = datetime.fromtimestamp(base_os_time).strftime(
+                    '%Y-%m-%d')
+            else:
+                time_str = (str(base_os_time).
+                            replace('_', ' ', 1).replace('_', ':', 1))
+            base_os = f'{base_os} ({time_str})'
+        extra_data.append({'display_key': 'Base OS',
+                           'display_value': base_os})
+    if installed_core_spec != core_version:
+        extra_data.append({'display_key': "Shipped Core Version",
+                           'display_value': installed_core_spec})
+    return extra_data
 
 
 def update_gui_ip_address(_: Message):

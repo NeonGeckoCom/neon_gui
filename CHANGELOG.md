@@ -1,12 +1,12 @@
 # Changelog
 
-## [1.2.1a1](https://github.com/NeonGeckoCom/neon_gui/tree/1.2.1a1) (2023-07-31)
+## [1.2.2a1](https://github.com/NeonGeckoCom/neon_gui/tree/1.2.2a1) (2023-08-25)
 
-[Full Changelog](https://github.com/NeonGeckoCom/neon_gui/compare/1.2.0...1.2.1a1)
+[Full Changelog](https://github.com/NeonGeckoCom/neon_gui/compare/1.2.1...1.2.2a1)
 
 **Merged pull requests:**
 
-- Improved Debos and K8s support [\#53](https://github.com/NeonGeckoCom/neon_gui/pull/53) ([NeonDaniel](https://github.com/NeonDaniel))
+- Update GUI display data to account for "NeonOS 2.0" image metadata [\#55](https://github.com/NeonGeckoCom/neon_gui/pull/55) ([NeonDaniel](https://github.com/NeonDaniel))
 
 
 
