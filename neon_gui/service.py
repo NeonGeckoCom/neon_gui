@@ -84,7 +84,14 @@ class NeonGUIService(Thread, GUIService):
         self.status.set_started()
         GUIService.run(self)
         self.bus.on("ovos.wifi.setup.completed", update_gui_ip_address)
+        self.bus.on("mycroft.ready", self.core_ready)
         self.started.set()
+
+    def core_ready(self, _):
+        from ovos_gui.bus import determine_if_gui_connected
+        if not determine_if_gui_connected():
+            LOG.warning("GUI service started with no connected clients!")
+            # TODO: Optionally notify systemd, etc. to restart the shell?
 
     def shutdown(self):
         LOG.info("GUI Service shutting down")
