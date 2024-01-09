@@ -27,6 +27,8 @@
 # SOFTWARE,  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from time import sleep
+
+from ovos_config import Configuration
 from tornado import ioloop
 from threading import Thread, Event
 from ovos_utils.log import LOG
@@ -91,7 +93,12 @@ class NeonGUIService(Thread, GUIService):
         from ovos_gui.bus import determine_if_gui_connected
         if not determine_if_gui_connected():
             LOG.warning("GUI service started with no connected clients!")
-            # TODO: Optionally notify systemd, etc. to restart the shell?
+            config = Configuration().get('gui', {})
+            if config.get("managed_shell_service"):
+                service_name = config["managed_shell_service"]
+                LOG.info(f"Restarting service: {service_name}")
+                from ovos_utils.system import restart_service
+                restart_service(service_name)
 
     def shutdown(self):
         LOG.info("GUI Service shutting down")
