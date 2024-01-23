@@ -14,3 +14,5 @@ jobs:
     needs: build_and_publish_pypi_and_release
     uses: neongeckocom/.github/.github/workflows/publish_docker.yml@master
     secrets: inherit
+    with:
+      platforms: linux/amd64,linux/arm64
