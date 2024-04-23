@@ -27,7 +27,7 @@
 # SOFTWARE,  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from ovos_bus_client import Message
-from ovos_utils.log import LOG
+from ovos_utils.log import LOG, log_deprecation
 from ovos_utils.gui import extend_about_data
 from datetime import datetime
 
@@ -79,9 +79,14 @@ def add_neon_about_data():
             build_info = json.load(f)
         if build_info.get("image", {}).get("version"):
             # Neon OS 2.0; use neon-debos version
-            extra_data.append({"display_key": "Neon OS",
+            extra_data.append({"display_key": "Neon Debos",
                                "display_value": build_info['image']['version']})
+            if build_info.get("build_version"):
+                extra_data.insert(0, {"display_key": "Neon OS",
+                                      "display_value": build_info["build_version"]})
         else:
+            log_deprecation("Legacy image metadata support is deprecated",
+                            "1.3")
             extra_data.extend(_get_legacy_image_metadata(build_info,
                                                          core_version))
     except FileNotFoundError:
