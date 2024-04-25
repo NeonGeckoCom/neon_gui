@@ -1,5 +1,5 @@
 neon-utils[network]~=1.6
-ovos-utils~=0.0.34
+ovos-utils~=0.0,>=0.0.34
 ovos-config~=0.0.10
 click~=8.0
 click-default-group~=1.2
