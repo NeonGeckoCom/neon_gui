@@ -26,9 +26,9 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE,  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from ovos_bus_client import Message
+from ovos_bus_client.message import Message
 from ovos_utils.log import LOG, log_deprecation
-from ovos_utils.gui import extend_about_data
+from ovos_bus_client.apis.gui import extend_about_data
 from datetime import datetime
 
 

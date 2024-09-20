@@ -67,7 +67,7 @@ class TestUtils(unittest.TestCase):
         shutil.rmtree(test_config_dir)
         os.environ.pop("XDG_CONFIG_HOME")
 
-    @mock.patch('ovos_utils.gui.extend_about_data')
+    @mock.patch('ovos_bus_client.apis.gui.extend_about_data')
     def test_add_about_data(self, extend_data):
         from neon_gui.utils import add_neon_about_data
         add_neon_about_data()
