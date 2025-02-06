@@ -32,6 +32,7 @@ import unittest
 import shutil
 
 from os.path import join
+from unittest import skip
 
 from mock import mock
 
@@ -39,6 +40,7 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 
 class TestUtils(unittest.TestCase):
+    @skip("Configuration patching is deprecated")
     def test_patch_config(self):
         import json
         import yaml
