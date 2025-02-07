@@ -69,7 +69,8 @@ setup(
     license='BSD-3-Clause',
     install_requires=get_requirements("requirements.txt"),
     extras_require={
-        "docker": get_requirements("docker.txt")
+        "docker": get_requirements("docker.txt"),
+        "test": get_requirements("test_requirements.txt")
     },
     author='Neongecko',
     author_email='developers@neon.ai',
