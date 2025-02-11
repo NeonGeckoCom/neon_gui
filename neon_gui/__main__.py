@@ -31,14 +31,13 @@ from ovos_utils.log import LOG
 from neon_gui.service import NeonGUIService
 from neon_utils.log_utils import init_log
 from neon_utils.process_utils import start_malloc, snapshot_malloc, print_malloc
-from ovos_utils.process_utils import reset_sigint_handler, PIDLock
+from ovos_utils.process_utils import reset_sigint_handler
 
 
 def main(*args, **kwargs):
     init_log(log_name="gui")
     malloc_running = start_malloc(stack_depth=4)
     reset_sigint_handler()
-    PIDLock("gui")
 
     gui = NeonGUIService(*args, **kwargs)
     gui.start()

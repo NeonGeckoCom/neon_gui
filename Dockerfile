@@ -3,9 +3,9 @@ FROM python:3.10-slim
 LABEL vendor=neon.ai \
     ai.neon.name="neon-gui"
 
-ENV OVOS_CONFIG_BASE_FOLDER neon
-ENV OVOS_CONFIG_FILENAME neon.yaml
-ENV XDG_CONFIG_HOME /config
+ENV OVOS_CONFIG_BASE_FOLDER=neon
+ENV OVOS_CONFIG_FILENAME=neon.yaml
+ENV XDG_CONFIG_HOME=/config
 
 EXPOSE 18181
 
