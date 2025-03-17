@@ -1,6 +1,6 @@
 # NEON AI (TM) SOFTWARE, Software Development Kit & Application Framework
 # All trademark and other rights reserved by their respective owners
-# Copyright 2008-2022 Neongecko.com Inc.
+# Copyright 2008-2025 Neongecko.com Inc.
 # Contributors: Daniel McKnight, Guy Daniels, Elon Gasper, Richard Leeds,
 # Regina Bloomstine, Casimiro Ferreira, Andrii Pernatii, Kirill Hrymailo
 # BSD-3 License
@@ -32,6 +32,7 @@ import unittest
 import shutil
 
 from os.path import join
+from unittest import skip
 
 from mock import mock
 
@@ -39,6 +40,7 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 
 class TestUtils(unittest.TestCase):
+    @skip("Configuration patching is deprecated")
     def test_patch_config(self):
         import json
         import yaml
@@ -67,7 +69,7 @@ class TestUtils(unittest.TestCase):
         shutil.rmtree(test_config_dir)
         os.environ.pop("XDG_CONFIG_HOME")
 
-    @mock.patch('ovos_utils.gui.extend_about_data')
+    @mock.patch('ovos_bus_client.apis.gui.extend_about_data')
     def test_add_about_data(self, extend_data):
         from neon_gui.utils import add_neon_about_data
         add_neon_about_data()

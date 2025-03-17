@@ -18,12 +18,12 @@ jobs:
     timeout-minutes: 15
     strategy:
       matrix:
-        python-version: [3.7, 3.8, 3.9, '3.10']
+        python-version: [3.9, '3.10', '3.11']
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Set up python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
@@ -31,23 +31,22 @@ jobs:
           sudo apt update
           sudo apt install -y gcc libfann-dev swig libssl-dev portaudio19-dev git libpulse-dev
           python -m pip install --upgrade pip
-          pip install -r requirements/requirements.txt
-          pip install -r requirements/test_requirements.txt
+          pip install .[test]
 
       - name: Test Utils
         run: |
           pytest tests/util_tests.py --doctest-modules --junitxml=tests/util-test-results.xml
       - name: Upload utils test results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
-          name: util-test-results
+          name: util-test-results-${{ matrix.python-version }}
           path: tests/util-test-results.xml
 
       - name: Test Service
         run: |
           pytest tests/test_gui_service.py --doctest-modules --junitxml=tests/gui-service-test-results.xml
       - name: Upload GUI Service test results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
-          name: gui-service-test-results
+          name: gui-service-test-results-${{ matrix.python-version }}
           path: tests/gui-service-test-results.xml

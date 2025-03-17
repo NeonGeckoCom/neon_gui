@@ -1,6 +1,6 @@
 # NEON AI (TM) SOFTWARE, Software Development Kit & Application Framework
 # All trademark and other rights reserved by their respective owners
-# Copyright 2008-2022 Neongecko.com Inc.
+# Copyright 2008-2025 Neongecko.com Inc.
 # Contributors: Daniel McKnight, Guy Daniels, Elon Gasper, Richard Leeds,
 # Regina Bloomstine, Casimiro Ferreira, Andrii Pernatii, Kirill Hrymailo
 # BSD-3 License
@@ -31,14 +31,13 @@ from ovos_utils.log import LOG
 from neon_gui.service import NeonGUIService
 from neon_utils.log_utils import init_log
 from neon_utils.process_utils import start_malloc, snapshot_malloc, print_malloc
-from ovos_utils.process_utils import reset_sigint_handler, PIDLock
+from ovos_utils.process_utils import reset_sigint_handler
 
 
 def main(*args, **kwargs):
     init_log(log_name="gui")
     malloc_running = start_malloc(stack_depth=4)
     reset_sigint_handler()
-    PIDLock("gui")
 
     gui = NeonGUIService(*args, **kwargs)
     gui.start()

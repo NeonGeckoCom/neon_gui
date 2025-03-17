@@ -1,6 +1,6 @@
 # NEON AI (TM) SOFTWARE, Software Development Kit & Application Framework
 # All trademark and other rights reserved by their respective owners
-# Copyright 2008-2022 Neongecko.com Inc.
+# Copyright 2008-2025 Neongecko.com Inc.
 # Contributors: Daniel McKnight, Guy Daniels, Elon Gasper, Richard Leeds,
 # Regina Bloomstine, Casimiro Ferreira, Andrii Pernatii, Kirill Hrymailo
 # BSD-3 License
@@ -26,9 +26,9 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE,  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from ovos_bus_client import Message
+from ovos_bus_client.message import Message
 from ovos_utils.log import LOG, log_deprecation
-from ovos_utils.gui import extend_about_data
+from ovos_bus_client.apis.gui import extend_about_data
 from datetime import datetime
 
 

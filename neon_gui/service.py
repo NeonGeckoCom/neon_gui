@@ -1,6 +1,6 @@
 # NEON AI (TM) SOFTWARE, Software Development Kit & Application Framework
 # All trademark and other rights reserved by their respective owners
-# Copyright 2008-2022 Neongecko.com Inc.
+# Copyright 2008-2025 Neongecko.com Inc.
 # Contributors: Daniel McKnight, Guy Daniels, Elon Gasper, Richard Leeds,
 # Regina Bloomstine, Casimiro Ferreira, Andrii Pernatii, Kirill Hrymailo
 # BSD-3 License
@@ -29,7 +29,7 @@
 from time import sleep
 from tornado import ioloop
 from threading import Thread, Event
-from ovos_utils.log import LOG
+from ovos_utils.log import LOG, log_deprecation
 from ovos_gui.service import GUIService
 
 from neon_gui.utils import update_gui_ip_address
@@ -80,6 +80,12 @@ class NeonGUIService(Thread, GUIService):
                             started_hook=started_hook, ready_hook=ready_hook,
                             error_hook=error_hook, stopping_hook=stopping_hook)
 
+    @property
+    def gui(self):
+        log_deprecation("`self.gui` has been replaced by "
+                        "`self.namespace_manager`", "2.0.0")
+        return self.namespace_manager
+
     def run(self):
         self.status.set_started()
         GUIService.run(self)
@@ -89,7 +95,7 @@ class NeonGUIService(Thread, GUIService):
     def shutdown(self):
         LOG.info("GUI Service shutting down")
         self.status.set_stopping()
-        self.gui.core_bus.close()
+        self.namespace_manager.core_bus.close()
         self.bus.close()
 
         loop = ioloop.IOLoop.instance()

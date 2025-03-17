@@ -1,6 +1,6 @@
 # NEON AI (TM) SOFTWARE, Software Development Kit & Application Framework
 # All trademark and other rights reserved by their respective owners
-# Copyright 2008-2022 Neongecko.com Inc.
+# Copyright 2008-2025 Neongecko.com Inc.
 # Contributors: Daniel McKnight, Guy Daniels, Elon Gasper, Richard Leeds,
 # Regina Bloomstine, Casimiro Ferreira, Andrii Pernatii, Kirill Hrymailo
 # BSD-3 License
@@ -69,7 +69,8 @@ setup(
     license='BSD-3-Clause',
     install_requires=get_requirements("requirements.txt"),
     extras_require={
-        "docker": get_requirements("docker.txt")
+        "docker": get_requirements("docker.txt"),
+        "test": get_requirements("test_requirements.txt")
     },
     author='Neongecko',
     author_email='developers@neon.ai',
