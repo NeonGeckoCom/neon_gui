@@ -1,28 +1,52 @@
 # Changelog
 
-## [1.2.3a3](https://github.com/NeonGeckoCom/neon_gui/tree/1.2.3a3) (2024-03-11)
+## [1.3.1a6](https://github.com/NeonGeckoCom/neon_gui/tree/1.3.1a6) (2025-03-17)
 
-[Full Changelog](https://github.com/NeonGeckoCom/neon_gui/compare/1.2.3a2...1.2.3a3)
-
-**Merged pull requests:**
-
-- Update shell metadata handling [\#59](https://github.com/NeonGeckoCom/neon_gui/pull/59) ([NeonDaniel](https://github.com/NeonDaniel))
-
-## [1.2.3a2](https://github.com/NeonGeckoCom/neon_gui/tree/1.2.3a2) (2024-01-30)
-
-[Full Changelog](https://github.com/NeonGeckoCom/neon_gui/compare/1.2.3a1...1.2.3a2)
+[Full Changelog](https://github.com/NeonGeckoCom/neon_gui/compare/1.3.1a5...1.3.1a6)
 
 **Merged pull requests:**
 
-- feat: upgrades dockerfile to python3.10-slim [\#58](https://github.com/NeonGeckoCom/neon_gui/pull/58) ([dblencowe](https://github.com/dblencowe))
+- Update Docker requirements to allow latest GUI Shell plugin [\#66](https://github.com/NeonGeckoCom/neon_gui/pull/66) ([NeonDaniel](https://github.com/NeonDaniel))
 
-## [1.2.3a1](https://github.com/NeonGeckoCom/neon_gui/tree/1.2.3a1) (2024-01-23)
+## [1.3.1a5](https://github.com/NeonGeckoCom/neon_gui/tree/1.3.1a5) (2025-02-11)
 
-[Full Changelog](https://github.com/NeonGeckoCom/neon_gui/compare/1.2.2...1.2.3a1)
+[Full Changelog](https://github.com/NeonGeckoCom/neon_gui/compare/1.3.1a4...1.3.1a5)
 
 **Merged pull requests:**
 
-- feat: Adds arm64 docker image builds [\#57](https://github.com/NeonGeckoCom/neon_gui/pull/57) ([dblencowe](https://github.com/dblencowe))
+- Deprecate `PIDLock` usage and update Dockerfile to resolve warnings [\#65](https://github.com/NeonGeckoCom/neon_gui/pull/65) ([NeonDaniel](https://github.com/NeonDaniel))
+
+## [1.3.1a4](https://github.com/NeonGeckoCom/neon_gui/tree/1.3.1a4) (2025-02-07)
+
+[Full Changelog](https://github.com/NeonGeckoCom/neon_gui/compare/1.3.1a3...1.3.1a4)
+
+**Merged pull requests:**
+
+- Update CLI configuration handling and unit tests [\#64](https://github.com/NeonGeckoCom/neon_gui/pull/64) ([NeonDaniel](https://github.com/NeonDaniel))
+
+## [1.3.1a3](https://github.com/NeonGeckoCom/neon_gui/tree/1.3.1a3) (2024-09-20)
+
+[Full Changelog](https://github.com/NeonGeckoCom/neon_gui/compare/1.3.1a2...1.3.1a3)
+
+**Merged pull requests:**
+
+- Update `extend_about_data` import [\#63](https://github.com/NeonGeckoCom/neon_gui/pull/63) ([NeonDaniel](https://github.com/NeonDaniel))
+
+## [1.3.1a2](https://github.com/NeonGeckoCom/neon_gui/tree/1.3.1a2) (2024-09-13)
+
+[Full Changelog](https://github.com/NeonGeckoCom/neon_gui/compare/1.3.1a1...1.3.1a2)
+
+**Merged pull requests:**
+
+- Update requirements to allow latest OVOS packages [\#62](https://github.com/NeonGeckoCom/neon_gui/pull/62) ([NeonDaniel](https://github.com/NeonDaniel))
+
+## [1.3.1a1](https://github.com/NeonGeckoCom/neon_gui/tree/1.3.1a1) (2024-04-25)
+
+[Full Changelog](https://github.com/NeonGeckoCom/neon_gui/compare/1.3.0...1.3.1a1)
+
+**Merged pull requests:**
+
+- Loosen ovos-utils dependency spec [\#61](https://github.com/NeonGeckoCom/neon_gui/pull/61) ([NeonDaniel](https://github.com/NeonDaniel))
 
 
 
