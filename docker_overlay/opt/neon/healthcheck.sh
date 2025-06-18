@@ -1,9 +1,8 @@
-# NEON AI (TM) SOFTWARE, Software Development Kit & Application Framework
+#!/bin/bash
+# NEON AI (TM) SOFTWARE, Software Development Kit & Application Development System
 # All trademark and other rights reserved by their respective owners
 # Copyright 2008-2025 Neongecko.com Inc.
-# Contributors: Daniel McKnight, Guy Daniels, Elon Gasper, Richard Leeds,
-# Regina Bloomstine, Casimiro Ferreira, Andrii Pernatii, Kirill Hrymailo
-# BSD-3 License
+# BSD-3
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 # 1. Redistributions of source code must retain the above copyright notice,
@@ -26,46 +25,12 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE,  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from ovos_utils import wait_for_exit_signal
-from ovos_utils.log import LOG
-from neon_gui.service import NeonGUIService
-from neon_utils.log_utils import init_log
-from neon_utils.process_utils import (
-    start_malloc,
-    snapshot_malloc,
-    print_malloc,
-)
-from ovos_utils.process_utils import reset_sigint_handler
-
-
-def main(*args, **kwargs):
-    init_log(log_name="gui")
-    malloc_running = start_malloc(stack_depth=4)
-    reset_sigint_handler()
-    health_check_server_port = kwargs.pop("health_check_server_port", None)
-    gui = NeonGUIService(*args, **kwargs)
-    if health_check_server_port is not None:
-        from neon_utils.process_utils import start_health_check_server
-
-        start_health_check_server(gui.status, health_check_server_port)
-    gui.start()
-    wait_for_exit_signal()
-    if malloc_running:
-        try:
-            print_malloc(snapshot_malloc())
-        except Exception as e:
-            LOG.error(e)
-    gui.shutdown()
-
-
-def deprecated_entrypoint():
-    from ovos_utils.log import log_deprecation
-
-    log_deprecation(
-        "Use `neon-gui run` in place of `neon_gui_service`", "2.0.0"
-    )
-    main()
-
-
-if __name__ == "__main__":
-    main()
+port=8000
+# Perform the health check using curl
+resp_content=$(curl -s http://localhost:${port}/status)
+if [ "${resp_content}" == "Ready" ]; then
+  exit 0  # Success
+else
+  echo "Health check failed with response: ${resp_content}" >&2
+  exit 1  # Failure
+fi

@@ -11,6 +11,7 @@ EXPOSE 18181
 
 RUN apt-get update && \
     apt-get install -y \
+    git \
     gcc \
     g++ \
     python3-dev \
@@ -18,12 +19,12 @@ RUN apt-get update && \
     libssl-dev \
     libfann-dev
 
-ADD . /neon_gui
+COPY . /neon_gui
 WORKDIR /neon_gui
 
-RUN pip install wheel \
-    && pip install .[docker]
+RUN pip install --no-cache-dir wheel \
+    && pip install --no-cache-dir .[docker]
 
 COPY docker_overlay/ /
-
-CMD ["neon-gui", "run"]
+HEALTHCHECK CMD "/opt/neon/healthcheck.sh"
+CMD ["neon-gui", "run", "-p", "8000"]

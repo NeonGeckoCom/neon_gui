@@ -1,4 +1,5 @@
-neon-utils[network]~=1.6
+#neon-utils[network]~=1.6
+neon-utils[network] @ git+https://github.com/neongeckocom/neon-utils@FEAT_HttpStatusServer#egg=neon-utils
 ovos-utils~=0.0,>=0.0.34
 ovos-config~=0.0,>=0.0.10
 click~=8.0

@@ -28,6 +28,7 @@
 
 import click
 
+from typing import Optional
 from os import environ
 from click_default_group import DefaultGroup
 from neon_utils.packaging_utils import get_package_version_spec
@@ -36,21 +37,36 @@ environ.setdefault("OVOS_CONFIG_BASE_FOLDER", "neon")
 environ.setdefault("OVOS_CONFIG_FILENAME", "neon.yaml")
 
 
-@click.group("neon-gui", cls=DefaultGroup,
-             no_args_is_help=True, invoke_without_command=True,
-             help="Neon GUI module Commands\n\n"
-                  "See also: neon COMMAND --help")
-@click.option("--version", "-v", is_flag=True, required=False,
-              help="Print the current version")
+@click.group(
+    "neon-gui",
+    cls=DefaultGroup,
+    no_args_is_help=True,
+    invoke_without_command=True,
+    help="Neon GUI module Commands\n\nSee also: neon COMMAND --help",
+)
+@click.option(
+    "--version",
+    "-v",
+    is_flag=True,
+    required=False,
+    help="Print the current version",
+)
 def neon_gui_cli(version: bool = False):
     if version:
-        click.echo(f"neon_gui version "
-                   f"{get_package_version_spec('neon_gui')}")
+        click.echo(f"neon_gui version {get_package_version_spec('neon_gui')}")
 
 
 @neon_gui_cli.command(help="Start Neon GUI module")
-def run():
+@click.option(
+    "--health-check-server-port",
+    "-p",
+    type=int,
+    default=None,
+    help="Port for health check server to listen on",
+)
+def run(health_check_server_port: Optional[int] = None):
     from neon_gui.__main__ import main
+
     click.echo("Starting GUI Service")
-    main()
+    main(health_check_server_port=health_check_server_port)
     click.echo("GUI Service Shutdown")
