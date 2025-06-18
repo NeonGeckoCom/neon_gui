@@ -28,7 +28,8 @@
 port=8000
 # Perform the health check using curl
 resp_content=$(curl -s http://localhost:${port}/status)
-if [ "${resp_content}" == "Ready" ]; then
+status=$(echo "${resp_content}" | jq -r '.status')
+if [ "${status}" == "Ready" ]; then
   exit 0  # Success
 else
   echo "Health check failed with response: ${resp_content}" >&2

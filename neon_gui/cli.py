@@ -59,7 +59,7 @@ def neon_gui_cli(version: bool = False):
 @neon_gui_cli.command(help="Start Neon GUI module")
 @click.option(
     "--health-check-server-port",
-    "-p",
+    "-hp",
     type=int,
     default=None,
     help="Port for health check server to listen on",

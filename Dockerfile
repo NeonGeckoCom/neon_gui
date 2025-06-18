@@ -12,6 +12,7 @@ EXPOSE 18181
 RUN apt-get update && \
     apt-get install -y \
     curl \
+    jq \
     git \
     gcc \
     g++ \
@@ -28,4 +29,4 @@ RUN pip install --no-cache-dir wheel \
 
 COPY docker_overlay/ /
 HEALTHCHECK CMD "/opt/neon/healthcheck.sh"
-CMD ["neon-gui", "run", "-p", "8000"]
+CMD ["neon-gui", "run", "-hp", "8000"]
