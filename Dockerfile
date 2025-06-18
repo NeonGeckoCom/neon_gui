@@ -11,6 +11,7 @@ EXPOSE 18181
 
 RUN apt-get update && \
     apt-get install -y \
+    curl \
     git \
     gcc \
     g++ \
