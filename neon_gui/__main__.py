@@ -47,7 +47,9 @@ def main(*args, **kwargs):
     if health_check_server_port is not None:
         from neon_utils.process_utils import start_health_check_server
 
-        start_health_check_server(gui.status, health_check_server_port)
+        start_health_check_server(
+            gui.status, health_check_server_port, gui.check_health
+        )
     gui.start()
     wait_for_exit_signal()
     if malloc_running:
