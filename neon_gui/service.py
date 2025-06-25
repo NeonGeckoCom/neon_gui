@@ -30,6 +30,8 @@ from time import sleep
 from tornado import ioloop
 from threading import Thread, Event
 from ovos_utils.log import LOG, log_deprecation
+from ovos_utils.process_utils import ProcessState
+from ovos_bus_client.message import Message
 from ovos_gui.service import GUIService
 
 from neon_gui.utils import update_gui_ip_address
@@ -43,7 +45,7 @@ def wrapped_ready_hook(ready_hook: callable):
     def wrapper():
         from neon_gui.utils import add_neon_about_data
         add_neon_about_data()
-        LOG.info(f"Updated GUI About Data")
+        LOG.info("Updated GUI About Data")
         ready_hook()
     return wrapper
 
@@ -75,6 +77,7 @@ class NeonGUIService(Thread, GUIService):
         self.daemon = daemonic
         self.name = 'GUI'
         self.started = Event()
+        self._status_from_bus_connection = False
         ready_hook = wrapped_ready_hook(ready_hook)
         GUIService.__init__(self, alive_hook=alive_hook,
                             started_hook=started_hook, ready_hook=ready_hook,
@@ -91,6 +94,29 @@ class NeonGUIService(Thread, GUIService):
         GUIService.run(self)
         self.bus.on("ovos.wifi.setup.completed", update_gui_ip_address)
         self.started.set()
+
+    def check_health(self):
+        """
+        Check the health of the GUI service and set an error state if the
+        service is unhealthy.
+        """
+        if self.status.state not in (ProcessState.READY, ProcessState.ERROR):
+            # Service is starting or stopping; skip health check
+            LOG.debug(f"Skipping health check during startup or shutdown. status={self.status.state}")
+            return
+        try:
+            self.bus.client.send(
+                    Message("neon.gui.health_check",
+                            context={"session": {"session_id": "default"}})
+                    .serialize())
+            if self._status_from_bus_connection:
+                self.status.set_ready()
+                self._status_from_bus_connection = False
+        except Exception as e:
+            LOG.error(f"Health check failed: {e}")
+            # Log without setting an error state as the bus should reconnect
+            self.status.set_error(f"Health check failed: {e}")
+            self._status_from_bus_connection = True
 
     def shutdown(self):
         LOG.info("GUI Service shutting down")

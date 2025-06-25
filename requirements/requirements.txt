@@ -1,4 +1,4 @@
-neon-utils[network]~=1.6
+neon-utils[network]~=1.6,>=1.12.2a2
 ovos-utils~=0.0,>=0.0.34
 ovos-config~=0.0,>=0.0.10
 click~=8.0
