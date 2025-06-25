@@ -77,7 +77,7 @@ class NeonGUIService(Thread, GUIService):
         self.daemon = daemonic
         self.name = 'GUI'
         self.started = Event()
-        self._status_from_bus_connection = True
+        self._status_from_bus_connection = False
         ready_hook = wrapped_ready_hook(ready_hook)
         GUIService.__init__(self, alive_hook=alive_hook,
                             started_hook=started_hook, ready_hook=ready_hook,
