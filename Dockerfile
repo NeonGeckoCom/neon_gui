@@ -13,7 +13,6 @@ RUN apt-get update && \
     apt-get install -y \
     curl \
     jq \
-    git \
     gcc \
     g++ \
     python3-dev \
