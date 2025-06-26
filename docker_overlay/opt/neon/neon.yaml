@@ -1,5 +1,5 @@
 MQ:
-  server: mq.2021.us
+  server: mq.neonaiservices.com
   port: 5672
   users:
     mq_handler:
@@ -8,6 +8,20 @@ MQ:
 signal:
   use_signal_files: false
   max_wait_seconds: 300
+logging:
+  log_level: INFO
+  logs:
+    path:
+    max_bytes: 50000000
+    backup_count: 3
+    diagnostic: False
+  level_overrides:
+    error: []
+    warning:
+      - filelock
+      - botocore
+    info: []
+    debug: []
 gui_websocket:
   host: 0.0.0.0
   base_port: 18181
@@ -21,6 +35,7 @@ gui:
   generic:
     homescreen_supported: true
 system:
+  disable_remote_config: true
   protected_keys:
     remote:
       - gui_websocket:host
