@@ -3,6 +3,7 @@ FROM python:3.10-slim
 LABEL vendor=neon.ai \
     ai.neon.name="neon-gui"
 
+ENV OVOS_DEFAULT_CONFIG=/opt/neon/neon.yaml
 ENV OVOS_CONFIG_BASE_FOLDER=neon
 ENV OVOS_CONFIG_FILENAME=neon.yaml
 ENV XDG_CONFIG_HOME=/config
